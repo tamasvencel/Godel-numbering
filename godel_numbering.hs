@@ -1,5 +1,4 @@
-import Data.Maybe (mapMaybe)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (mapMaybe, fromMaybe)
 import Data.List (group)
 
 -- Hungarian:
