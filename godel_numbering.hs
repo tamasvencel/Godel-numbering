@@ -1,6 +1,3 @@
-import Data.Maybe (mapMaybe, fromMaybe)
-import Data.List (group)
-
 -- Hungarian:
 -- A Gödel-számozás egy leképezés, amely minden kifejezéshez egy számot rendel hozzá, 
 -- és a híres, Gödel-féle nemteljességi tétel bizonyításához használják, 
@@ -10,6 +7,9 @@ import Data.List (group)
 -- Gödel numbering is a mapping that assigns a number to each expression, 
 -- and is used to prove the famous Gödel's incompleteness theorem, 
 -- but can also be thought of as a cipher. In this exercise, we will implement a simplified Gödel notation.
+
+import Data.Maybe (mapMaybe, fromMaybe)
+import Data.List (group)
 
 -- Creating the dictionary type
 type Dictionary = [(Char, Int)]
@@ -70,10 +70,10 @@ encode dict str = product $ zipWith (^) primeList (translate dict str)
 -- DECODING --
 --------------
 -- Finds the character assigned to the specified number
-numToChar :: Dictionary -> Int -> Maybe Char
+numToChar :: Dictionary -> Int -> Maybe [Char]
 numToChar [] _ = Nothing
 numToChar ((c,num):dict) n
-    | n == num = Just c
+    | n == num = Just [c]
     | otherwise = numToChar dict n
 -- test: numToChar (dictionary $ ['a' .. 'z'] ++ ['A' .. 'Z']) 42
 
@@ -105,12 +105,5 @@ decode dict n = concatMap (fromMaybe "*" . numToChar dict) factorCounts
     where
         primeFactors = primeFactorization n  -- Get prime factors of n
         factorCounts = map length $ group primeFactors  -- Count occurrences of each prime factor
-        
-        -- Finds the character assigned to the specified number
-        numToChar :: Dictionary -> Int -> Maybe [Char]
-        numToChar [] _ = Nothing
-        numToChar ((c,num):dict) n
-            | n == num = Just [c]
-            | otherwise = numToChar dict n
 
 -- TODO: input file, encrypted file, decrypted file, gödel's incompleteness theorem
