@@ -101,9 +101,13 @@ primeFactorization n
 -- test: primeFactorization 42
 
 decode :: Dictionary -> Integer -> String
-decode dict n = concatMap (fromMaybe "*" . numToChar dict) factorCounts
+decode dict n = concatMap (fromMaybe "*" . numToChar dict) factorCounts -- if it fails to convert to the char, it returns *
     where
         primeFactors = primeFactorization n  -- Get prime factors of n
-        factorCounts = map length $ group primeFactors  -- Count occurrences of each prime factor
+        factorCounts = map length $ group primeFactors  -- Count occurrences of each prime factor, "group" groups identical primes, like [2,3,3,5,5,7] -> [[2], [3,3], [5,5], [7]]
+-- In summary, the decode function takes a dictionary and a Gödel number, 
+-- calculates the prime factors and their number of occurences, 
+-- converts each count to a character using the dictionary, 
+-- and concatenates the characters to form the decoded string.
 
 -- TODO: input file, encrypted file, decrypted file, gödel's incompleteness theorem
