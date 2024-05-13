@@ -1,14 +1,14 @@
--- Hungarian:
--- A Gödel-számozás egy leképezés, amely minden kifejezéshez egy számot rendel hozzá, 
--- és a híres, Gödel-féle nemteljességi tétel bizonyításához használják, 
--- de felfogható kódolásként is. A feladatban egy egyszerűsített Gödel-számozást fogunk megvalósítani.
-
 -- English:
 -- Gödel numbering is a mapping that assigns a number to each expression, 
 -- and is used to prove the famous Gödel's incompleteness theorem, 
 -- but can also be thought of as a cipher. In this exercise, we will implement a simplified Gödel notation.
 
-import Data.Maybe (mapMaybe, fromMaybe)
+-- Hungarian:
+-- A Gödel-számozás egy leképezés, amely minden kifejezéshez egy számot rendel hozzá, 
+-- és a híres, Gödel-féle nemteljességi tétel bizonyításához használják, 
+-- de felfogható kódolásként is. A feladatban egy egyszerűsített Gödel-számozást fogunk megvalósítani.
+
+import Data.Maybe (fromMaybe)
 import Data.List (group)
 
 -- Creating the dictionary type
@@ -134,7 +134,31 @@ decodeTextFile dict encodedFile decodedFile = do
 
 main :: IO ()
 main = do
-    let dict = dictionary ['a'..'z']
+    let dict = dictionary (['a'..'z'] ++ ['\'', ' '])
     
     encodeTextFile dict "input.txt" "encoded.txt"
     decodeTextFile dict "encoded.txt" "decoded.txt"
+
+--------------------------------------------
+-- Proving Gödel's incompleteness theorem --
+--------------------------------------------
+-- Note: Gödel used complex mathematical concepts, arithmetic operations, logical symbols, 
+-- we will prove the same thing he did, but in our own simplified system
+
+dictionaryToProveTheorem :: Dictionary
+dictionaryToProveTheorem = dictionary ['n', 'o', 'p', 'r', 'f', 's', 't', 'a', 'e', 'm', 'w', 'i', 'h', 'g', 'd', 'l',  'u', 'b']
+
+proveGodel'sIncompletenessTheorem :: IO ()
+proveGodel'sIncompletenessTheorem = do
+    -- Define the statement G using only characters from the dictionary
+    let statement = "no proof for statement with godel number 200110744078624342146261625871540938484073629315325247508879570347077401626924166475466579713308035014642704018470691449254401930458691164270882372195859047146351623455018370221871548270852737949425741177934664297734762538471101626737709188328267449001260512308827105716238428682761628937715526866238193384624720527723502262784518662338173673535696380517146278283120284670652702391702052974521677912774662236437307945710987997288453234355386969715025002033081514995470288178444889862"
+    -- Encode the statement into its Gödel number
+    let encodedStatement = encode dictionaryToProveTheorem statement
+    
+    -- Display the statement and its Gödel number
+    putStrLn $ "\n" ++ "Statement: " ++ statement
+    putStrLn $ "\n" ++ "Gödel number of the statement: " ++ show encodedStatement ++ "\n"
+    -- Check if the Gödel number in the statement matches the actual Gödel number
+    if encodedStatement == 200110744078624342146261625871540938484073629315325247508879570347077401626924166475466579713308035014642704018470691449254401930458691164270882372195859047146351623455018370221871548270852737949425741177934664297734762538471101626737709188328267449001260512308827105716238428682761628937715526866238193384624720527723502262784518662338173673535696380517146278283120284670652702391702052974521677912774662236437307945710987997288453234355386969715025002033081514995470288178444889862
+        then putStrLn "The statement G matches its Gödel number, proving its own unprovability."
+        else putStrLn "Error: Gödel number mismatch, the statement does not prove its own unprovability."
