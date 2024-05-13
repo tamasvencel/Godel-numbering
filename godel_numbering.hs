@@ -110,4 +110,31 @@ decode dict n = concatMap (fromMaybe "*" . numToChar dict) factorCounts -- if it
 -- converts each count to a character using the dictionary, 
 -- and concatenates the characters to form the decoded string.
 
--- TODO: input file, encrypted file, decrypted file, gödel's incompleteness theorem
+-- test: decode (dictionary ['a' .. 'z']) 1575
+
+-- Function to encode text from an input file and write the encoded text to an encoded file
+encodeTextFile :: Dictionary -> FilePath -> FilePath -> IO ()
+encodeTextFile dict inputFile encodedFile = do
+    -- Read text from input file
+    inputText <- readFile inputFile
+    -- Encode the input text
+    let encodedText = encode dict inputText
+    -- Write the encoded text to the encoded file
+    writeFile encodedFile (show encodedText)
+
+-- Function to decode text from an encoded file and write the decoded text to a decoded file
+decodeTextFile :: Dictionary -> FilePath -> FilePath -> IO ()
+decodeTextFile dict encodedFile decodedFile = do
+    -- Read encoded text from encoded file
+    encodedText <- readFile encodedFile
+    -- Decode the encoded text
+    let decodedText = decode dict (read encodedText :: Integer)
+    -- Write the decoded text to the decoded file
+    writeFile decodedFile decodedText
+
+main :: IO ()
+main = do
+    let dict = dictionary ['a'..'z']
+    
+    encodeTextFile dict "input.txt" "encoded.txt"
+    decodeTextFile dict "encoded.txt" "decoded.txt"
